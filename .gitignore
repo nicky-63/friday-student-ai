@@ -1,0 +1,8 @@
+/.dist
+/.env
+/index.html
+/package.json
+/README.md
+/script.js
+/server.js
+/styles.css
