@@ -356,9 +356,9 @@ async function handleChat() {
   const message = chatInput.value.trim();
   if (!message) return;
 
-  appendChat("You", message, "user");
+  appendChat("You", message, "user", false);
   chatInput.value = "";
-  appendChat("F.R.I.D.A.Y", "Processing student signal...");
+  appendChat("F.R.I.D.A.Y", "Processing student signal...", "system", false);
 
   const result = await postApi("/api/chat", {
     message,
@@ -371,7 +371,21 @@ async function handleChat() {
   const pending = chatLog.lastElementChild;
   if (pending) pending.remove();
 
-  appendChat("F.R.I.D.A.Y", result?.reply || localChatAnswer(message));
+  appendChat("F.R.I.D.A.Y", result?.reply || localChatAnswer(message), "", true);
+}
+
+function appendChat(author, text, className = "", isMarkdown = false) {
+  const item = document.createElement("p");
+  item.className = className;
+  
+  if (isMarkdown && typeof marked !== 'undefined') {
+    item.innerHTML = `<strong>${escapeHtml(author)}:</strong> ${marked.parse(text)}`;
+  } else {
+    item.innerHTML = `<strong>${escapeHtml(author)}:</strong> ${escapeHtml(text)}`;
+  }
+  
+  chatLog.appendChild(item);
+  chatLog.scrollTop = chatLog.scrollHeight;
 }
 
 async function handlePracticeGeneration() {
@@ -405,14 +419,6 @@ async function handlePracticeGeneration() {
   }
 }
 
-function appendChat(author, text, className = "") {
-  const item = document.createElement("p");
-  item.className = className;
-  item.innerHTML = `<strong>${escapeHtml(author)}:</strong> ${escapeHtml(text)}`;
-  chatLog.appendChild(item);
-  chatLog.scrollTop = chatLog.scrollHeight;
-}
-
 function localChatAnswer(message) {
   return `Briefing: "${message}" connects to ${rootGap.textContent}. Fix that prerequisite first, then retry ${targetTopic.value}.`;
 }
@@ -421,6 +427,7 @@ function applyAiAnalysis(result, fallbackScenario, concepts) {
   const normalizedPath = normalizePath(result.path, fallbackScenario);
   const scenario = inferScenario(`${result.title || ""} ${normalizedPath.join(" ")}`, fallbackScenario);
   const base = scenarioLibrary[scenario] || scenarioLibrary[fallbackScenario];
+  
   const path = normalizedPath.length ? normalizedPath : base.path;
   const edgesForPath = edgesFromPath(path);
 
@@ -430,7 +437,7 @@ function applyAiAnalysis(result, fallbackScenario, concepts) {
     confidence: Number(result.confidence) || base.confidence,
     rootGap: result.rootGap || base.rootGap,
     explanation: result.explanation || base.explanation,
-    path,
+    path: path, 
     edges: edgesForPath.length ? edgesForPath : base.edges,
     recommendations: Array.isArray(result.recommendations) ? result.recommendations : base.recommendations,
     feed: [
@@ -462,9 +469,9 @@ function edgesFromPath(path) {
     .filter(([, [from, to]]) => pairs.has(`${from}-${to}`) || pairs.has(`${to}-${from}`))
     .map(([edge]) => edge);
 }
+
 async function postApi(path, payload) {
   try {
-    // This points to your own Netlify site relative path instead of an external URL
     const response = await fetch(path, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
