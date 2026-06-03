@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>F.R.I.D.A.Y | Student AI Command Center</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Student AI Command Center</p>
+        <h1>F.R.I.D.A.Y</h1>
+      </div>
+      <a class="repo-pill" href="#architecture">Academic AI core</a>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="kicker">Focused Remediation Intelligence for Dynamic Academic Yield</p>
+          <h2>Your personal academic AI, built to find the real reason a lesson is not clicking.</h2>
+          <p>
+            F.R.I.D.A.Y watches the syllabus, maps every prerequisite, reads student signals,
+            traces the root cause of confusion, and briefs the learner with the shortest route back to mastery.
+          </p>
+          <div class="hero-actions">
+            <button class="primary-btn" id="runSwarm">Activate F.R.I.D.A.Y</button>
+            <button class="secondary-btn" id="resetDemo">Reset demo</button>
+          </div>
+          <p class="mode-pill" id="aiMode">Checking AI core...</p>
+        </div>
+
+        <section class="diagnosis-panel" aria-label="Live diagnosis panel">
+          <div class="panel-header">
+            <div>
+              <p class="eyebrow">Live intelligence trace</p>
+              <h3 id="selectedStudentTitle">Student: stuck on derivatives</h3>
+            </div>
+            <span class="confidence" id="confidenceScore">91% confidence</span>
+          </div>
+
+          <div class="student-switcher" aria-label="Choose a student scenario">
+            <button class="scenario active" data-scenario="derivatives">Derivatives</button>
+            <button class="scenario" data-scenario="optimization">Optimization</button>
+            <button class="scenario" data-scenario="integrals">Integrals</button>
+          </div>
+
+          <div class="trace-box">
+            <p class="trace-label">Root gap discovered</p>
+            <strong id="rootGap">Algebraic simplification</strong>
+            <p id="traceExplanation">
+              The student fails before applying derivative rules, so F.R.I.D.A.Y traces the issue to rational expression simplification.
+            </p>
+          </div>
+
+          <ol class="agent-feed" id="agentFeed">
+            <li><span>Syllabus Scanner</span> Parsed calculus unit objectives</li>
+            <li><span>Prerequisite Engine</span> Linked derivatives to limits and function manipulation</li>
+            <li><span>Gap Trace Core</span> Found lowest mastered prerequisite on the path</li>
+          </ol>
+        </section>
+      </section>
+
+      <section class="control-room" aria-label="F.R.I.D.A.Y control room">
+        <div class="control-card">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Mission input</p>
+              <h2>Give F.R.I.D.A.Y a syllabus and a student signal</h2>
+            </div>
+          </div>
+          <label for="syllabusInput">Syllabus scan</label>
+          <textarea id="syllabusInput" rows="7">Calculus I: functions, graph interpretation, limits, derivatives, optimization, integrals, trigonometry review, algebraic simplification, rational expressions, applications of rates of change.</textarea>
+          <div class="input-row">
+            <label class="file-loader" for="fileInput">Load syllabus file</label>
+            <input id="fileInput" type="file" accept=".txt,.md,.csv,.html">
+            <button class="secondary-btn" id="buildMap">Build knowledge map</button>
+          </div>
+        </div>
+
+        <div class="control-card">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Student signal</p>
+              <h2>Describe what is going wrong</h2>
+            </div>
+          </div>
+          <label for="studentSignal">Observed confusion</label>
+          <textarea id="studentSignal" rows="7">Student is stuck on derivatives and keeps failing when rational expressions must be simplified before using derivative rules.</textarea>
+          <div class="input-row">
+            <select id="targetTopic" aria-label="Target topic">
+              <option value="derivatives">Derivatives</option>
+              <option value="optimization">Optimization</option>
+              <option value="integrals">Integrals</option>
+            </select>
+            <button class="primary-btn" id="analyzeGap">Analyze student gap</button>
+          </div>
+        </div>
+
+        <aside class="control-card status-card">
+          <p class="eyebrow">System state</p>
+          <div class="status-line">
+            <span>Syllabus Scanner</span>
+            <strong id="scannerStatus">Ready</strong>
+          </div>
+          <div class="status-line">
+            <span>Concept Mapper</span>
+            <strong id="mapperStatus">Ready</strong>
+          </div>
+          <div class="status-line">
+            <span>Gap Trace Core</span>
+            <strong id="traceStatus">Ready</strong>
+          </div>
+          <div class="status-line">
+            <span>Briefing Validator</span>
+            <strong id="validatorStatus">Ready</strong>
+          </div>
+          <div class="concept-cloud" id="conceptCloud" aria-label="Extracted concepts"></div>
+          <button class="secondary-btn full-width" id="exportBriefing">Export briefing</button>
+        </aside>
+      </section>
+
+      <section class="ai-suite" aria-label="Student AI tools">
+        <article class="control-card ai-chat">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Student copilot</p>
+              <h2>Ask F.R.I.D.A.Y</h2>
+            </div>
+          </div>
+          <div class="chat-log" id="chatLog" aria-live="polite">
+            <p><strong>F.R.I.D.A.Y:</strong> Give me the topic, your mistake, or your syllabus. I will trace the missing prerequisite and brief you like a study command center.</p>
+          </div>
+          <div class="chat-row">
+            <input id="chatInput" type="text" placeholder="Ask: Why am I stuck on derivatives?">
+            <button class="primary-btn" id="sendChat">Send</button>
+          </div>
+        </article>
+
+        <article class="control-card practice-card">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Training protocol</p>
+              <h2>Generate targeted practice</h2>
+            </div>
+          </div>
+          <button class="secondary-btn full-width" id="generatePractice">Generate practice set</button>
+          <ol class="practice-list" id="practiceList">
+            <li>Simplify a rational expression before applying a derivative rule.</li>
+            <li>Identify which prerequisite concept is blocking the solution.</li>
+            <li>Retry the original topic with the repaired prerequisite.</li>
+          </ol>
+        </article>
+
+        <article class="control-card">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Study armor</p>
+              <h2>Personal recovery plan</h2>
+            </div>
+          </div>
+          <div class="study-plan" id="studyPlan">
+            <p><strong>Today:</strong> Fix the root gap first, then return to the current topic.</p>
+            <p><strong>Next:</strong> Use the generated practice set to confirm mastery.</p>
+          </div>
+        </article>
+      </section>
+
+      <section class="workspace">
+        <div class="graph-area" aria-label="Prerequisite graph">
+          <div class="section-title">
+            <p class="eyebrow">Academic knowledge core</p>
+            <h2>Live prerequisite map</h2>
+          </div>
+
+          <div class="graph" id="graph">
+            <svg class="edges" viewBox="0 0 920 470" role="img" aria-label="Concept prerequisite graph connections">
+              <path data-edge="algebra-functions" d="M152 326 C240 300 245 250 322 224"></path>
+              <path data-edge="functions-limits" d="M428 213 C500 195 525 164 595 146"></path>
+              <path data-edge="limits-derivatives" d="M690 151 C735 174 760 211 785 255"></path>
+              <path data-edge="derivatives-optimization" d="M760 326 C675 355 608 364 510 352"></path>
+              <path data-edge="graphs-derivatives" d="M382 392 C510 420 673 384 760 325"></path>
+              <path data-edge="trig-integrals" d="M160 120 C300 90 488 96 605 126"></path>
+              <path data-edge="algebra-integrals" d="M170 332 C302 361 498 340 620 302"></path>
+            </svg>
+
+            <button class="node root" data-node="algebra" style="--x: 78px; --y: 282px">
+              Algebraic<br>Simplification
+            </button>
+            <button class="node" data-node="trig" style="--x: 72px; --y: 72px">
+              Trigonometry
+            </button>
+            <button class="node" data-node="functions" style="--x: 318px; --y: 176px">
+              Function<br>Manipulation
+            </button>
+            <button class="node" data-node="graphs" style="--x: 280px; --y: 360px">
+              Graph<br>Interpretation
+            </button>
+            <button class="node" data-node="limits" style="--x: 610px; --y: 106px">
+              Limits
+            </button>
+            <button class="node current" data-node="derivatives" style="--x: 760px; --y: 258px">
+              Derivatives
+            </button>
+            <button class="node" data-node="optimization" style="--x: 420px; --y: 314px">
+              Optimization
+            </button>
+            <button class="node" data-node="integrals" style="--x: 620px; --y: 272px">
+              Integrals
+            </button>
+          </div>
+        </div>
+
+        <aside class="recommendation" aria-label="Recommended recovery path">
+          <div class="section-title">
+            <p class="eyebrow">F.R.I.D.A.Y briefing</p>
+            <h2>Shortest bridge back</h2>
+          </div>
+          <ul id="recommendations">
+            <li>Review simplifying rational expressions</li>
+            <li>Practice canceling common factors</li>
+            <li>Retry derivative problems after simplification</li>
+          </ul>
+          <div class="metric-grid">
+            <div>
+              <span id="timeSaved">12 min</span>
+              <p>targeted review</p>
+            </div>
+            <div>
+              <span id="nodesChecked">6</span>
+              <p>nodes checked</p>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="agents" id="architecture">
+        <div class="section-title">
+          <p class="eyebrow">Academic AI core</p>
+          <h2>Specialized modules, shared memory, verified student briefing</h2>
+        </div>
+
+        <div class="agent-grid">
+          <article>
+            <span>01</span>
+            <h3>Syllabus Scanner</h3>
+            <p>Reads syllabi, lesson lists, assignments, objectives, and rubrics.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Concept Mapper</h3>
+            <p>Finds explicit and hidden concepts, then normalizes duplicates.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Prerequisite Engine</h3>
+            <p>Creates prerequisite nodes, edges, evidence, and confidence scores.</p>
+          </article>
+          <article>
+            <span>04</span>
+            <h3>Student Signal Reader</h3>
+            <p>Maps quiz answers, attempts, and chat confusion to concept mastery.</p>
+          </article>
+          <article>
+            <span>05</span>
+            <h3>Gap Trace Core</h3>
+            <p>Walks backward through dependencies to find the first weak link.</p>
+          </article>
+          <article>
+            <span>06</span>
+            <h3>Briefing Validator</h3>
+            <p>Challenges low-confidence diagnoses before the recommendation ships.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
