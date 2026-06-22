@@ -1,0 +1,1 @@
+F.R.I.D.A.Y. is a multi-module academic search, indexing, and dependency engine designed to optimize student learning paths. Instead of treating study material as static text, this platform programmatically maps educational content into dynamic graph logic to isolate core conceptual knowledge gaps and deliver deterministic study paths.
